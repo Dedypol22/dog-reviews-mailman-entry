@@ -26,6 +26,10 @@ def output_dir():
 def main():
     """Write the review line to entry.txt and print it to stdout."""
     text = LINE + "\n"
+    if not LINE.strip():
+        raise ValueError("review payload must not be empty")
+    if any(ord(ch) < 32 or ord(ch) == 0x7F for ch in LINE):
+        raise ValueError("review payload must not contain control characters")
     path = os.path.join(output_dir(), "entry.txt")
     os.makedirs(output_dir(), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
